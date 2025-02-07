@@ -1,473 +1,504 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="UTF-8">
-    <!-- Set viewport for mobile portrait orientation and responsiveness -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Superfight Modified Game</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 10px;
-            background: #f9f9f9;
-        }
-
-        h1,
-        h2 {
-            text-align: center;
-            margin: 10px 0;
-            /* Added margin for better readability */
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px;
-        }
-
-        th,
-        td {
-            border: 1px solid #aaa;
-            padding: 5px;
-            text-align: center;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .timer {
-            font-size: 2em;
-            text-align: center;
-            margin: 10px 0;
-            border: 2px solid black;
-            /* Border for the timer section */
-            padding: 10px;
-        }
-
-        .scoreboard {
-            font-size: 1.2em;
-            margin: 10px;
-            text-align: center;
-        }
-
-        .scoreboard div {
-            margin: 5px;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: auto;
-        }
-
-        /* Black and white aesthetic for buttons */
-        button {
-            background-color: black;
-            color: white;
-            border: 2px solid white;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
-            margin: 5px;
-            height: 5vh;
-        }
-
-        button:hover {
-            background-color: white;
-            color: black;
-            border: 2px solid black;
-        }
-
-        /* Center the Gain Weakness button */
-        #gainWeaknessButton {
-            display: block;
-            margin: 10px auto;
-        }
-
-        /* Border and padding for card preview section */
-        #csvPreviewSection {
-            border: 2px solid black;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        /* Border and padding for final Result */
-        #finalResult {
-            border: 2px solid black;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        /* Make dropdowns larger and adjust font sizes */
-        select {
-            min-height: 5vh;
-            /* At least 10% of viewport height */
-            font-size: 3vh;
-            /* So that text scales with height */
-            width: 100%;
-            box-sizing: border-box;
-            margin-top: 3vh
-        }
-
-        /* Labels sized to be half the height of the select element (i.e. about 5vh) */
-        label {
-            font-size: 5vh;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            button {
-                padding: 10px;
-                font-size: 1em;
-            }
-
-            select {
-                font-size: 5vh;
-            }
-
-            label {
-                font-size: 5vh;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <!-- Set viewport for mobile portrait orientation and responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Superfight Modified Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      background: #f9f9f9;
+    }
+    h1, h2, h3 {
+      text-align: center;
+      margin: 10px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
+    th, td {
+      border: 1px solid #aaa;
+      padding: 5px;
+      text-align: center;
+    }
+    .hidden {
+      display: none;
+    }
+    .scoreboard {
+      font-size: 1.2em;
+      margin: 10px;
+      text-align: center;
+    }
+    .scoreboard div {
+      margin: 5px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+    }
+    /* Black and white aesthetic for buttons */
+    button {
+      background-color: black;
+      color: white;
+      border: 2px solid white;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: white;
+      color: black;
+      border: 2px solid black;
+    }
+    /* Center the Gain Weakness button */
+    #gainWeaknessButton {
+      display: block;
+      margin: 10px auto;
+    }
+    /* Border and padding for CSV preview section */
+    #csvPreviewSection {
+      border: 2px solid black;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    /* Timer container styling */
+    #timerInterface {
+      border: 2px solid black;
+      padding: 10px;
+      margin: 10px 0;
+      text-align: center;
+    }
+    #timerDisplay {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    /* Tab structure styling */
+    .tab {
+      overflow: hidden;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    .tab button.tablink {
+      background-color: #f1f1f1;
+      float: left;
+      border: 1px solid #ccc;
+      outline: none;
+      cursor: pointer;
+      padding: 10px 16px;
+      transition: 0.3s;
+      font-size: 1em;
+      color: #000000;
+    }
+    .tab button.tablink.active {
+      background-color: #000000;
+      color: #f1f1f1;
+    }
+    .tabcontent {
+      display: none;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-top: none;
+      clear: both;
+      font-size: 3vh;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      button {
+        padding: 10px;
+        font-size: 1em;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>SUPERFIGHT</h1>
-
-        <!-- CSV Upload Section -->
-        <div id="uploadSection">
-            <input type="file" id="csvFileInput" accept=".csv">
-            <button id="loadCsvButton">Load CSV</button>
+  <div class="container">
+    <h1>Superfight Modified Game</h1>
+    
+    <!-- CSV Upload Section -->
+    <div id="uploadSection">
+      <input type="file" id="csvFileInput" accept=".csv">
+      <button id="loadCsvButton">Load CSV</button>
+    </div>
+    
+    <!-- CSV Preview Section -->
+    <div id="csvPreviewSection" class="hidden">
+      <h2>Card Preview</h2>
+      <table id="csvPreview"></table>
+      <button id="collectCardsButton">Collect Cards</button>
+    </div>
+    
+    <!-- Card Selection Section using Tab Structures -->
+    <div id="cardSelection" class="hidden">
+      <div id="fighterTabSection">
+        <h3>Select Fighter</h3>
+        <div class="tab">
+          <button class="tablink" onclick="openFighterTab(event, 'fighter1')">Fighter 1</button>
+          <button class="tablink" onclick="openFighterTab(event, 'fighter2')">Fighter 2</button>
+          <button class="tablink" onclick="openFighterTab(event, 'fighter3')">Fighter 3</button>
         </div>
-
-        <!-- CSV Preview Section -->
-        <div id="csvPreviewSection" class="hidden">
-            <h2>Card Preview</h2>
-            <table id="csvPreview"></table>
-            <button id="collectCardsButton">Collect Cards</button>
+        <div id="fighter1" class="tabcontent"></div>
+        <div id="fighter2" class="tabcontent"></div>
+        <div id="fighter3" class="tabcontent"></div>
+      </div>
+      <div id="perkTabSection">
+        <h3>Select Perk</h3>
+        <div class="tab">
+          <button class="tablink" onclick="openPerkTab(event, 'perk1')">Perk 1</button>
+          <button class="tablink" onclick="openPerkTab(event, 'perk2')">Perk 2</button>
+          <button class="tablink" onclick="openPerkTab(event, 'perk3')">Perk 3</button>
+          <button class="tablink" onclick="openPerkTab(event, 'perk4')">Perk 4</button>
         </div>
-
-        <!-- Card Selection Section -->
-        <div id="cardSelection" class="hidden">
-            <div id="dropdowns">
-                <div>
-                    <label for="fighterSelect">Fighter:</label>
-                    <select id="fighterSelect"></select>
-                </div>
-                <div>
-                    <label for="perkSelect">Perk:</label>
-                    <select id="perkSelect"></select>
-                </div>
-                <button id="confirmSelectionButton">Confirm Selection</button>
-            </div>
+        <div id="perk1" class="tabcontent"></div>
+        <div id="perk2" class="tabcontent"></div>
+        <div id="perk3" class="tabcontent"></div>
+        <div id="perk4" class="tabcontent"></div>
+      </div>
+      <button id="confirmSelectionButton">Confirm Selection</button>
+    </div>
+    
+    <!-- Final Result Section -->
+    <div id="finalResult" class="hidden">
+      <!-- Display confirmed fighter (h1) and perk (h2) without labels -->
+      <h1 id="fighterDisplay"></h1>
+      <h2 id="perkDisplay" style="color: darkblue;"></h2>
+      <!-- Weakness appears (in red) below the perk -->
+      <h2 id="weaknessDisplay" class="hidden" style="color: red; margin-top: 10px;"></h2>
+      <button id="gainWeaknessButton">Gain Weakness</button>
+    </div>
+    
+    <!-- Timer Interface Section (grouped in one outlined div) -->
+    <div id="timerInterface" class="hidden">
+      <div id="timerDisplay">01:00</div>
+      <div style="margin-bottom: 10px;">
+        <button id="decreaseTimer">-10s</button>
+        <button id="increaseTimer">+10s</button>
+      </div>
+      <div>
+        <button id="startTimer">Start</button>
+        <button id="pauseTimer">Pause</button>
+        <button id="resetTimer">Reset</button>
+        <button id="finishTimer">Finish</button>
+      </div>
+    </div>
+    
+    <!-- Scoreboard Interface Section -->
+    <div id="scoreboardInterface" class="hidden">
+      <div class="scoreboard">
+        <h2>Score Board</h2>
+        <div>Victory Rate: <span id="victoryRate">0%</span></div>
+        <div>
+          Wins: <button id="decrementWins">-</button>
+          <span id="winCount">0</span>
+          <button id="incrementWins">+</button>
         </div>
-
-        <!-- Final Result Section -->
-        <div id="finalResult" class="hidden">
-            <!-- Fighter is displayed in h1 without a label -->
-            <h1 id="fighterDisplay"></h1>
-            <!-- Perk in h2 with dark blue and weakness in h2 with red (with added margin) -->
-            <h2 id="perkDisplay" style="color: darkblue;"></h2>
-            <h2 id="weaknessDisplay" class="hidden" style="color: red; margin-top: 10px;"></h2>
-            <button id="gainWeaknessButton">Gain Weakness</button>
+        <div>
+          Losses: <button id="decrementLosses">-</button>
+          <span id="lossCount">0</span>
+          <button id="incrementLosses">+</button>
         </div>
+        <button id="newRoundButton">New Round</button>
+      </div>
+    </div>
+  </div> <!-- end container -->
 
-        <!-- Timer Interface Section -->
-        <div id="timerInterface" class="hidden">
-            <div class="timer" id="timerDisplay">01:00</div>
-            <div style="text-align:center;">
-                <button id="decreaseTimer">-10s</button>
-                <button id="increaseTimer">+10s</button>
-            </div>
-            <div style="text-align:center;">
-                <button id="startTimer">Start</button>
-                <button id="pauseTimer">Pause</button>
-                <button id="resetTimer">Reset</button>
-            </div>
-        </div>
+  <script>
+    // Global variables for CSV data, game state, and card pools.
+    let csvData = []; // Array of objects: { fighter, perk, weakness }
+    let fighterCards = [];
+    let perkCards = [];
+    let fighterPool = []; // Pool of fighter values
+    let perkPool = [];    // Pool of perk values
+    let timerTime = 60; // Default timer: 1 minute
+    let timerInterval = null;
+    let wins = 0;
+    let losses = 0;
+    let selectedFighter = "";
+    let selectedPerk = "";
 
-        <!-- Scoreboard Interface Section -->
-        <div id="scoreboardInterface" class="hidden">
-            <div class="scoreboard">
-                <h2>Score Board</h2>
-                <div>Victory Rate: <span id="victoryRate">0%</span></div>
-                <div>
-                    Wins: <button id="decrementWins">-</button>
-                    <span id="winCount">0</span>
-                    <button id="incrementWins">+</button>
-                </div>
-                <div>
-                    Losses: <button id="decrementLosses">-</button>
-                    <span id="lossCount">0</span>
-                    <button id="incrementLosses">+</button>
-                </div>
-                <button id="newRoundButton">New Round</button>
-            </div>
-        </div>
-    </div> <!-- end container -->
+    // Prevent accidental refresh/leave.
+    window.addEventListener('beforeunload', function (e) {
+      e.preventDefault();
+      e.returnValue = '';
+    });
 
-    <script>
-        // Global variables for storing CSV data and game state.
-        let csvData = [];   // Array of objects: { fighter, perk, weakness }
-        let fighterCards = [];
-        let perkCards = [];
-        let timerTime = 60;  // Timer default in seconds (1 minute)
-        let timerInterval = null;
-        let wins = 0;
-        let losses = 0;
+    document.addEventListener('DOMContentLoaded', function() {
 
-        // Prevent accidental refresh/leave.
-        window.addEventListener('beforeunload', function (e) {
-            e.preventDefault();
-            e.returnValue = '';
+      // CSV Load event: Read CSV, parse it, display preview, then hide upload.
+      document.getElementById('loadCsvButton').addEventListener('click', function() {
+        const fileInput = document.getElementById('csvFileInput');
+        if (fileInput.files.length === 0) {
+          alert('Please select a CSV file first.');
+          return;
+        }
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const text = e.target.result;
+          parseCSV(text);
+          displayPreview();
+          // Initialize the pools from the CSV data.
+          fighterPool = csvData.map(row => row.fighter);
+          perkPool = csvData.map(row => row.perk);
+          document.getElementById('uploadSection').classList.add('hidden');
+          document.getElementById('csvPreviewSection').classList.remove('hidden');
+        };
+        reader.readAsText(file);
+      });
+
+      // Parse CSV text; ignore header if found.
+      function parseCSV(text) {
+        const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+        if (lines.length > 0 &&
+            lines[0].toLowerCase().includes('fighter') &&
+            lines[0].toLowerCase().includes('perk') &&
+            lines[0].toLowerCase().includes('weakness')) {
+          lines.shift();
+        }
+        csvData = lines.map(line => {
+          const parts = line.split(',');
+          return {
+            fighter: parts[0].trim(),
+            perk: parts[1].trim(),
+            weakness: parts[2].trim()
+          };
         });
+      }
 
-        document.addEventListener('DOMContentLoaded', function () {
-
-            // CSV Load: Read CSV, parse it, display preview, then hide the upload section.
-            document.getElementById('loadCsvButton').addEventListener('click', function () {
-                const fileInput = document.getElementById('csvFileInput');
-                if (fileInput.files.length === 0) {
-                    alert('Please select a CSV file first.');
-                    return;
-                }
-                const file = fileInput.files[0];
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const text = e.target.result;
-                    parseCSV(text);
-                    displayPreview();
-                    // Hide the upload section once CSV is loaded.
-                    document.getElementById('uploadSection').classList.add('hidden');
-                    // Show the preview section.
-                    document.getElementById('csvPreviewSection').classList.remove('hidden');
-                };
-                reader.readAsText(file);
-            });
-
-            // Parse CSV text into an array of objects.
-            function parseCSV(text) {
-                const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
-                // If the first row contains header keywords, remove it.
-                if (lines.length > 0 &&
-                    lines[0].toLowerCase().includes('fighter') &&
-                    lines[0].toLowerCase().includes('perk') &&
-                    lines[0].toLowerCase().includes('weakness')) {
-                    lines.shift();
-                }
-                csvData = lines.map(line => {
-                    const parts = line.split(',');
-                    return {
-                        fighter: parts[0].trim(),
-                        perk: parts[1].trim(),
-                        weakness: parts[2].trim()
-                    };
-                });
-            }
-
-            // Display a preview table of all cards.
-            function displayPreview() {
-                const table = document.getElementById('csvPreview');
-                table.innerHTML = ''; // Clear previous content
-                const header = document.createElement('tr');
-                ['Fighter', 'Perk', 'Weakness'].forEach(text => {
-                    const th = document.createElement('th');
-                    th.textContent = text;
-                    header.appendChild(th);
-                });
-                table.appendChild(header);
-                csvData.forEach(card => {
-                    const row = document.createElement('tr');
-                    ['fighter', 'perk', 'weakness'].forEach(key => {
-                        const cell = document.createElement('td');
-                        cell.textContent = card[key];
-                        row.appendChild(cell);
-                    });
-                    table.appendChild(row);
-                });
-            }
-
-            // Collect Cards: Randomly select 3 fighters and 4 perks,
-            // then hide the preview table and the collect cards button.
-            document.getElementById('collectCardsButton').addEventListener('click', function () {
-                if (csvData.length === 0) {
-                    alert('No card data loaded!');
-                    return;
-                }
-                // Hide the preview table and button to avoid repeat collection.
-                document.getElementById('csvPreviewSection').classList.add('hidden');
-                document.getElementById('collectCardsButton').classList.add('hidden');
-
-                // Randomly select fighter and perk cards.
-                fighterCards = [];
-                perkCards = [];
-                for (let i = 0; i < 3; i++) {
-                    const randomIndex = Math.floor(Math.random() * csvData.length);
-                    fighterCards.push(csvData[randomIndex].fighter);
-                }
-                for (let i = 0; i < 4; i++) {
-                    const randomIndex = Math.floor(Math.random() * csvData.length);
-                    perkCards.push(csvData[randomIndex].perk);
-                }
-                populateDropdown('fighterSelect', fighterCards);
-                populateDropdown('perkSelect', perkCards);
-                // Reveal the card selection interface.
-                document.getElementById('cardSelection').classList.remove('hidden');
-            });
-
-            // Populate a dropdown with given items.
-            function populateDropdown(selectId, items) {
-                const selectElem = document.getElementById(selectId);
-                selectElem.innerHTML = '';
-                items.forEach(function (item) {
-                    const option = document.createElement('option');
-                    option.value = item;
-                    option.textContent = item;
-                    selectElem.appendChild(option);
-                });
-            }
-
-            // Confirm the fighter and perk selection.
-            document.getElementById('confirmSelectionButton').addEventListener('click', function () {
-                const fighter = document.getElementById('fighterSelect').value;
-                const perk = document.getElementById('perkSelect').value;
-                // Hide the dropdowns.
-                document.getElementById('dropdowns').classList.add('hidden');
-                // Display the confirmed fighter (h1) and perk (h2).
-                document.getElementById('fighterDisplay').textContent = fighter;
-                document.getElementById('perkDisplay').textContent = perk;
-                // Ensure weakness is cleared/hidden.
-                const weaknessElem = document.getElementById('weaknessDisplay');
-                weaknessElem.textContent = '';
-                weaknessElem.classList.add('hidden');
-                // Show the final result section.
-                document.getElementById('finalResult').classList.remove('hidden');
-            });
-
-            // Gain Weakness: Randomly select and display a weakness, then show timer.
-            document.getElementById('gainWeaknessButton').addEventListener('click', function () {
-                if (csvData.length === 0) {
-                    alert('No card data loaded!');
-                    return;
-                }
-                const randomIndex = Math.floor(Math.random() * csvData.length);
-                const weakness = csvData[randomIndex].weakness;
-                const weaknessElem = document.getElementById('weaknessDisplay');
-                weaknessElem.textContent = weakness;
-                weaknessElem.classList.remove('hidden');
-                // Hide the Gain Weakness button immediately.
-                this.style.display = 'none';
-                // Show the timer interface.
-                document.getElementById('timerInterface').classList.remove('hidden');
-            });
-
-            // Timer adjustment buttons.
-            document.getElementById('increaseTimer').addEventListener('click', function () {
-                timerTime += 10;
-                updateTimerDisplay();
-            });
-            document.getElementById('decreaseTimer').addEventListener('click', function () {
-                if (timerTime >= 10) {
-                    timerTime -= 10;
-                    updateTimerDisplay();
-                }
-            });
-            // Update timer display in MM:SS format.
-            function updateTimerDisplay() {
-                const minutes = Math.floor(timerTime / 60);
-                const seconds = timerTime % 60;
-                document.getElementById('timerDisplay').textContent =
-                    (minutes < 10 ? '0' : '') + minutes + ':' +
-                    (seconds < 10 ? '0' : '') + seconds;
-            }
-
-            // Timer controls: Start, Pause, Reset.
-            document.getElementById('startTimer').addEventListener('click', function () {
-                if (timerInterval) return; // Prevent multiple intervals.
-                timerInterval = setInterval(function () {
-                    if (timerTime > 0) {
-                        timerTime--;
-                        updateTimerDisplay();
-                    } else {
-                        clearInterval(timerInterval);
-                        timerInterval = null;
-                        // When timer ends, hide timer and show scoreboard.
-                        document.getElementById('timerInterface').classList.add('hidden');
-                        document.getElementById('scoreboardInterface').classList.remove('hidden');
-                    }
-                }, 1000);
-            });
-            document.getElementById('pauseTimer').addEventListener('click', function () {
-                if (timerInterval) {
-                    clearInterval(timerInterval);
-                    timerInterval = null;
-                }
-            });
-            document.getElementById('resetTimer').addEventListener('click', function () {
-                if (timerInterval) {
-                    clearInterval(timerInterval);
-                    timerInterval = null;
-                }
-                timerTime = 60; // Reset to default 1 minute
-                updateTimerDisplay();
-            });
-
-            // Scoreboard controls.
-            function updateVictoryRate() {
-                const total = wins + losses;
-                const rate = total > 0 ? Math.round((wins / total) * 100) : 0;
-                document.getElementById('victoryRate').textContent = rate + '%';
-            }
-            document.getElementById('incrementWins').addEventListener('click', function () {
-                wins++;
-                document.getElementById('winCount').textContent = wins;
-                updateVictoryRate();
-            });
-            document.getElementById('decrementWins').addEventListener('click', function () {
-                if (wins > 0) wins--;
-                document.getElementById('winCount').textContent = wins;
-                updateVictoryRate();
-            });
-            document.getElementById('incrementLosses').addEventListener('click', function () {
-                losses++;
-                document.getElementById('lossCount').textContent = losses;
-                updateVictoryRate();
-            });
-            document.getElementById('decrementLosses').addEventListener('click', function () {
-                if (losses > 0) losses--;
-                document.getElementById('lossCount').textContent = losses;
-                updateVictoryRate();
-            });
-
-            // New Round: Reset the game interface for a new round without clearing the scoreboard.
-            document.getElementById('newRoundButton').addEventListener('click', function () {
-                // Hide final result, timer interface, and card selection.
-                document.getElementById('finalResult').classList.add('hidden');
-                document.getElementById('timerInterface').classList.add('hidden');
-                document.getElementById('cardSelection').classList.add('hidden');
-                // Reset dropdowns for a fresh card selection.
-                document.getElementById('dropdowns').classList.remove('hidden');
-                document.getElementById('fighterSelect').innerHTML = '';
-                document.getElementById('perkSelect').innerHTML = '';
-                // Re-enable and show Gain Weakness button.
-                const gainWeaknessBtn = document.getElementById('gainWeaknessButton');
-                gainWeaknessBtn.disabled = false;
-                gainWeaknessBtn.style.display = 'block';
-                // Reset timer.
-                timerTime = 60;
-                updateTimerDisplay();
-                // Re-show the Collect Cards button.
-                document.getElementById('collectCardsButton').classList.remove('hidden');
-            });
+      // Display CSV preview in a table.
+      function displayPreview() {
+        const table = document.getElementById('csvPreview');
+        table.innerHTML = '';
+        const header = document.createElement('tr');
+        ['Fighter', 'Perk', 'Weakness'].forEach(text => {
+          const th = document.createElement('th');
+          th.textContent = text;
+          header.appendChild(th);
         });
-    </script>
+        table.appendChild(header);
+        csvData.forEach(card => {
+          const row = document.createElement('tr');
+          ['fighter', 'perk', 'weakness'].forEach(key => {
+            const cell = document.createElement('td');
+            cell.textContent = card[key];
+            row.appendChild(cell);
+          });
+          table.appendChild(row);
+        });
+      }
+
+      // Collect Cards event: Randomly select 3 fighters and 4 perks without replacement.
+      document.getElementById('collectCardsButton').addEventListener('click', function() {
+        if (csvData.length === 0) {
+          alert('No card data loaded!');
+          return;
+        }
+        document.getElementById('csvPreview').classList.add('hidden');
+        document.getElementById('collectCardsButton').classList.add('hidden');
+
+        // If not enough fighters in the pool, reset the fighter pool.
+        if (fighterPool.length < 3) {
+          fighterPool = csvData.map(row => row.fighter);
+        }
+        // If not enough perks in the pool, reset the perk pool.
+        if (perkPool.length < 4) {
+          perkPool = csvData.map(row => row.perk);
+        }
+
+        fighterCards = [];
+        perkCards = [];
+        for (let i = 0; i < 3; i++) {
+          let randomIndex = Math.floor(Math.random() * fighterPool.length);
+          fighterCards.push(fighterPool.splice(randomIndex, 1)[0]);
+        }
+        for (let i = 0; i < 4; i++) {
+          let randomIndex = Math.floor(Math.random() * perkPool.length);
+          perkCards.push(perkPool.splice(randomIndex, 1)[0]);
+        }
+
+        // Populate fighter tab contents.
+        document.getElementById('fighter1').innerText = fighterCards[0];
+        document.getElementById('fighter2').innerText = fighterCards[1];
+        document.getElementById('fighter3').innerText = fighterCards[2];
+        // Populate perk tab contents.
+        document.getElementById('perk1').innerText = perkCards[0];
+        document.getElementById('perk2').innerText = perkCards[1];
+        document.getElementById('perk3').innerText = perkCards[2];
+        document.getElementById('perk4').innerText = perkCards[3];
+
+        // Show card selection section with tabs.
+        document.getElementById('cardSelection').classList.remove('hidden');
+
+        // Automatically open the first fighter and first perk tabs.
+        document.querySelector("#fighterTabSection .tab button.tablink").click();
+        document.querySelector("#perkTabSection .tab button.tablink").click();
+      });
+
+      // Confirm Selection: use the currently selected fighter and perk.
+      document.getElementById('confirmSelectionButton').addEventListener('click', function() {
+        document.getElementById('fighterDisplay').textContent = selectedFighter;
+        document.getElementById('perkDisplay').textContent = selectedPerk;
+        document.getElementById('cardSelection').classList.add('hidden');
+        document.getElementById('finalResult').classList.remove('hidden');
+      });
+
+      // Gain Weakness: randomly select a weakness, hide its button, and show the timer.
+      document.getElementById('gainWeaknessButton').addEventListener('click', function() {
+        if (csvData.length === 0) {
+          alert('No card data loaded!');
+          return;
+        }
+        const randomIndex = Math.floor(Math.random() * csvData.length);
+        const weakness = csvData[randomIndex].weakness;
+        const weaknessElem = document.getElementById('weaknessDisplay');
+        weaknessElem.textContent = weakness;
+        weaknessElem.classList.remove('hidden');
+        this.style.display = 'none';
+        document.getElementById('timerInterface').classList.remove('hidden');
+      });
+
+      // Timer controls.
+      document.getElementById('increaseTimer').addEventListener('click', function() {
+        timerTime += 10;
+        updateTimerDisplay();
+      });
+      document.getElementById('decreaseTimer').addEventListener('click', function() {
+        if (timerTime >= 10) {
+          timerTime -= 10;
+          updateTimerDisplay();
+        }
+      });
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timerTime / 60);
+        const seconds = timerTime % 60;
+        document.getElementById('timerDisplay').textContent =
+          (minutes < 10 ? '0' : '') + minutes + ':' +
+          (seconds < 10 ? '0' : '') + seconds;
+      }
+      document.getElementById('startTimer').addEventListener('click', function() {
+        if (timerInterval) return;
+        timerInterval = setInterval(function() {
+          if (timerTime > 0) {
+            timerTime--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            document.getElementById('timerInterface').classList.add('hidden');
+            document.getElementById('scoreboardInterface').classList.remove('hidden');
+          }
+        }, 1000);
+      });
+      document.getElementById('pauseTimer').addEventListener('click', function() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+      });
+      document.getElementById('resetTimer').addEventListener('click', function() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+        timerTime = 60;
+        updateTimerDisplay();
+      });
+      document.getElementById('finishTimer').addEventListener('click', function() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+        document.getElementById('timerInterface').classList.add('hidden');
+        document.getElementById('scoreboardInterface').classList.remove('hidden');
+      });
+
+      // Scoreboard controls.
+      function updateVictoryRate() {
+        const total = wins + losses;
+        const rate = total > 0 ? Math.round((wins / total) * 100) : 0;
+        document.getElementById('victoryRate').textContent = rate + '%';
+      }
+      document.getElementById('incrementWins').addEventListener('click', function() {
+        wins++;
+        document.getElementById('winCount').textContent = wins;
+        updateVictoryRate();
+      });
+      document.getElementById('decrementWins').addEventListener('click', function() {
+        if (wins > 0) wins--;
+        document.getElementById('winCount').textContent = wins;
+        updateVictoryRate();
+      });
+      document.getElementById('incrementLosses').addEventListener('click', function() {
+        losses++;
+        document.getElementById('lossCount').textContent = losses;
+        updateVictoryRate();
+      });
+      document.getElementById('decrementLosses').addEventListener('click', function() {
+        if (losses > 0) losses--;
+        document.getElementById('lossCount').textContent = losses;
+        updateVictoryRate();
+      });
+
+      // New Round: Reset the game interface (except the scoreboard) and clear final result info.
+      document.getElementById('newRoundButton').addEventListener('click', function() {
+        document.getElementById('finalResult').classList.add('hidden');
+        document.getElementById('timerInterface').classList.add('hidden');
+        document.getElementById('cardSelection').classList.add('hidden');
+        // Clear final result texts.
+        document.getElementById('fighterDisplay').textContent = "";
+        document.getElementById('perkDisplay').textContent = "";
+        document.getElementById('weaknessDisplay').textContent = "";
+        selectedFighter = "";
+        selectedPerk = "";
+        // Re-enable the Gain Weakness button.
+        document.getElementById('gainWeaknessButton').style.display = 'block';
+        timerTime = 60;
+        updateTimerDisplay();
+        document.getElementById('collectCardsButton').classList.remove('hidden');
+        document.getElementById('scoreboardInterface').classList.add('hidden');
+      });
+    });
+
+    // --- Tab functions for Fighter and Perk selection ---
+    function openFighterTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.querySelectorAll("#fighterTabSection .tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.querySelectorAll("#fighterTabSection .tab button.tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+      document.getElementById(tabName).style.display = "block";
+      if (evt) {
+        evt.currentTarget.classList.add("active");
+      }
+      selectedFighter = document.getElementById(tabName).innerText;
+    }
+
+    function openPerkTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.querySelectorAll("#perkTabSection .tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.querySelectorAll("#perkTabSection .tab button.tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+      document.getElementById(tabName).style.display = "block";
+      if (evt) {
+        evt.currentTarget.classList.add("active");
+      }
+      selectedPerk = document.getElementById(tabName).innerText;
+    }
+  </script>
 </body>
-
 </html>
